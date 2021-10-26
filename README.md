@@ -2,10 +2,10 @@ Chatapplication
 ===============
 
 ## Requirements
-jersey 2.33
-jersey test framework 2.33
-simpleserver 6.0.1
-jackson 2.11.3
+- jersey 2.33
+- jersey test framework 2.33
+- simpleserver 6.0.1
+- jackson 2.11.3
 
 
 This is application is build as an alternative of using Spring. It is highly modularized and decoupled to increase maintainability.
