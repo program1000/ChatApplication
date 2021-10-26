@@ -15,26 +15,14 @@ The way it is setup, it also could use other webserver implementation such as JD
 Because JDK server does not support SSE (JAX-RS 2.1), the default is SimpleServer.
 
 Project hierarchy:
-    chat-account-server-start
-          |
-    chat-account-server chat-account-server-connector chat-message-server chat-message-server-connector      chat-web-server-jersey
-          |                                                       |                                                 |                |
-    chat-account-server-connector                     chat-message-server-connector                   chat-account-server-connector chat-message-server-connector
+![](/images/project-hierarchy.png)
 
 The structure consists of different modules, wich allows testing individually.
 The modules are connected with connectors, which allows changing an implementation on either side.
 Because the connectors use their own message objects, a change in the message definition is not propagated to the connectors interface.
 
 Functional hierarchy:
-                  WebServer
-                     /    \
-   AccountServerConnector MessageServerConnector
-            |                       |
-       AccountServer         MessageServer
-            |                       |
-       Session/Security       Session/Security
-            |                       |
-            Db                      Db
+![](/images/functional-hierarchy.png)
 
 AccountServer keeps track of users, MessageServer keeps track of messages.
 Session keeps a list of current users/messages online.
@@ -45,7 +33,7 @@ The webapplication uses only JavaScript with Bootstrap. It is a single page appl
 An user can login, request invite id, add others invite id, send and receive messages.
 When messages can not be delivered, because user is offline, the messages are kept at the server. When is receiving user is online, it will receive undelivered messages.
 
-# Images
+## Images
 ![](/images/gui.png)
 > Example of chat application in the browser
 
