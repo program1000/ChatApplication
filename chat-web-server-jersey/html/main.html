@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link href="bootstrap.min.css" rel="stylesheet">
+<link href="bootstrap-grid.min.css" rel="stylesheet">
+<link href="bootstrap-utilities.min.css" rel="stylesheet">
+<style>
+body {
+    background-color:#f5f5f5;
+}
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
+.window-conversation {
+  padding: 15px;
+}
+.top-div{
+  justify-content: space-between;
+  display: flex;
+  align-items: center;
+}
+.behind {
+  display: none;
+}
+.conv-div {
+  position: absolute;
+  cursor: move;
+}
+.conv-textarea {
+  min-width: 250px;
+  resize:both;
+}
+#contact-list li:hover{
+  background-color:#b3e6ff;
+}
+.contact-item a{
+  color:#212121;
+  text-decoration:none;
+}
+.scroll-col{
+  height:calc(100vh - 290px);
+  overflow-y:scroll;
+}
+.contact-selected{
+  background-color:#cccc00;
+}
+#error-div {
+  top: calc(100vh - 135px);
+  position: absolute;
+  z-index: 3;
+}
+.error-text {
+  height: auto;
+  width: 100%;
+}
+ </style>
+<script src="bootstrap.min.js"></script>
+
+  <title>Converation</title>
+</head>
+<body>
+  <main class="window-conversation">
+  <div class="container-fluid" id="main-container">
+  
+  <div class="row behind" id="main-content">
+  <div class="col-8" id="conversation-content">
+
+  <div class="col-7 p-3 bg-light border rounded-3 invisible" id="error-div">
+      <textarea rows=3 class="btn-outline-danger error-text" id="error-txt" readonly></textarea>
+  </div>
+
+  </div>
+
+  <div class="col-4">
+     <div class="p-3 bg-light border rounded-3 mb-2">
+	   <div class="top-div">
+		   <label for="logout-btn" id="name-lbl"></label>
+           <button type="button" class="btn btn-outline-secondary btn-sm" id="logout-btn">Logout</button>
+       </div>
+	 </div>
+     <div class="p-3 bg-light border rounded-3" id="contact-div">
+          <div class="row mb-3">
+               <div class="col-8 p-3 border rounded-3">
+                 <ul class="list-group scroll-col mb-3" id="contact-list">
+                 </ul>
+                 <div class="input-group">
+                   <button type="button" class="btn btn-outline-secondary btn-sm" id="mod-contacts-btn" data-bs-toggle="modal" data-bs-target="#contacts-modal">Modify contacts</button>
+                 </div>
+               </div>
+               <div class="col-4">
+                 <ul class="list-group">
+                 </ul>
+                 <!--
+                 <div class="input-group">
+                   <button type="button" class="btn btn-outline-secondary btn-sm disabled" id="new-group-btn">New group</button>
+                 </div>
+                 -->
+               </div>
+          </div>
+          <div class="row">
+             <div class="col">
+             <div class="input-group">
+                   <button type="button" class="btn btn-outline-secondary btn-sm disabled" id="new-conversation-btn" >Start conversation</button>
+             </div>
+             </div>
+             <div class="col">
+             <div class="input-group">
+                   <button type="button" class="btn btn-outline-secondary btn-sm disabled" id="del-contact-btn" >Delete contacts</button>
+             </div>
+              </div>
+          </div>
+     </div>
+  </div>
+  </div>
+  </div>
+
+  </main>
+
+  <div class="modal fade" id="contacts-modal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modify contacts</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="p-3 border rounded-3 mb-3">
+          <label for="contact-token-text" class="form-label">Invite new contact by sharing invite token</label>
+          <div class="input-group">
+            <button class="btn btn-outline-secondary" type="button" id="contact-token-btn">Generate invite token</button>
+            <input type="text" readonly class="form-control" id="contact-token-text">
+          </div>
+        </div> 
+        <div class="p-3 border rounded-3">
+          <label for="add-token-text" class="form-label">Add new contact by adding invite token</label>
+          <div class="input-group">
+            <input type="text" class="form-control" id="add-token-text">
+            <button class="btn btn-outline-secondary" type="button" id="add-token-btn">Add contact</button>
+          </div>
+        </div>
+		<div class="p-3 border rounded-3 mt-3 invisible" id="contact-error-div">
+		   <textarea rows=3 class="error-text" id="contact-error-txt" readonly></textarea>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+  </div>
+
+<script type="module" src="status.js"></script>
+<script type="module" src="sender.js"></script>  
+<script type="module" src="login.js"></script>
+<script type="module" src="contacts.js"></script>
+<script type="module" src="contacts-selection.js"></script>
+<script type="module" src="conversation-dialogs.js"></script>
+<script type="module" src="conversation-dialog-move-handler.js"></script>
+<script type="module" src="message-listener.js"></script>
+<script type="module" src="validate.js"></script>
+<script type="module" src="error-box.js"></script>
+<script type="module">
+import Login from './login.js';
+import sendData from './sender.js';
+
+// dependency tree:
+//
+//                 main
+//                  |
+//                login
+//                  |
+//              contacts
+//               /           \                                   
+// contacts-selection       conversation-dialogs
+//                        /                        \                 
+//         conversation-dialog-move-handler   message-listener    
+//                                                           
+// util: sender, status, validate, error-box
+
+var login=new Login();
+//tmp
+document.getElementById("login-inp").value="n1";
+document.getElementById("login-pwd").value="p1";
+//document.getElementById("login-btn").click();
+//setTimeout(function() {
+//  document.getElementById("add-token-text").value="c2";
+//  document.getElementById("add-token-btn").click();
+//}, 500);
+
+//document.getElementById("t1").onclick=testB;
+//var t2button = new bootstrap.Button(document.getElementById("t2"));
+
+//function testB(event) {
+//};
+//tmp
+
+
+</script>
+</body>
+</html>
